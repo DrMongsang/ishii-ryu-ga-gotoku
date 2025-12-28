@@ -80,6 +80,15 @@ body {
     font-size: var(--font-size-md);
     color: var(--text-light);
     font-weight: 400;
+    margin-bottom: var(--spacing-xs);
+}
+
+.vibed-by {
+    font-size: var(--font-size-xs);
+    color: var(--secondary-color);
+    font-weight: 600;
+    font-style: italic;
+    letter-spacing: 0.5px;
 }
 
 /* ========================================

@@ -1,6 +1,8 @@
-# PDF to PowerPoint Converter
+# 石井龍が如く（最強のPDF→パワポ変換ツール）
 
-PDFファイルをドラッグ&ドロップで美しいPowerPointプレゼンテーションに変換するWebアプリケーション。
+**vibed by MONGSANG SOFT**
+
+PDFファイルをドラッグ&ドロップで美しいPowerPointプレゼンテーションに変換する、最強のWebアプリケーション。
 
 ## 特徴
 
