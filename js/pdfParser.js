@@ -100,6 +100,8 @@ class PDFParser {
         const page = await this.pdfDocument.getPage(pageNum);
         const textContent = await page.getTextContent();
 
+        console.log(`ページ ${pageNum}: ${textContent.items.length}個のテキストアイテム`);
+
         // テキストアイテムを行ごとにグループ化
         const lines = this.groupTextByLines(textContent.items);
 
@@ -107,9 +109,11 @@ class PDFParser {
         const title = this.extractTitle(lines);
         const content = this.extractContent(lines);
 
+        console.log(`ページ ${pageNum} - タイトル: "${title.substring(0, 50)}", 本文: ${content.length}文字`);
+
         return {
             pageNumber: pageNum,
-            title: title,
+            title: title || `ページ ${pageNum}`, // タイトルが空の場合のフォールバック
             content: content,
             rawText: lines.join('\n'),
             textItems: textContent.items
@@ -123,13 +127,16 @@ class PDFParser {
      */
     groupTextByLines(textItems) {
         if (!textItems || textItems.length === 0) {
+            console.warn('PDF Parser: テキストアイテムが空です');
             return [];
         }
+
+        console.log(`PDF Parser: ${textItems.length}個のテキストアイテムを処理中`);
 
         const lines = [];
         let currentLine = '';
         let lastY = null;
-        const yThreshold = 2; // Y座標の許容誤差
+        const yThreshold = 10; // Y座標の許容誤差を拡大（2 → 10）
 
         textItems.forEach((item, index) => {
             const text = item.str.trim();
@@ -154,6 +161,11 @@ class PDFParser {
         // 最後の行を追加
         if (currentLine.trim()) {
             lines.push(currentLine.trim());
+        }
+
+        console.log(`PDF Parser: ${lines.length}行のテキストを抽出しました`);
+        if (lines.length > 0) {
+            console.log(`最初の行: "${lines[0].substring(0, 50)}..."`);
         }
 
         return lines;
