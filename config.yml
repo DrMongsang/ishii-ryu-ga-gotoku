@@ -1,0 +1,123 @@
+template:
+  name: "FABRIC TOKYO Standard"
+  version: "1.0"
+
+design:
+  theme:
+    primary_color: "#2C5F2D"      # FABRIC TOKYOグリーン
+    secondary_color: "#97BC62"    # ライトグリーン
+    accent_color: "#F5F5F5"       # ライトグレー
+    background_color: "#FFFFFF"   # ホワイト
+    text_color: "#333333"         # ダークグレー
+
+  fonts:
+    title:
+      family: "游ゴシック Medium"  # 日本語対応フォント
+      family_en: "Yu Gothic Medium"
+      size: 36
+      bold: true
+      color: "#2C5F2D"
+      line_height: 1.4           # 行間（改行割れ防止）
+
+    body:
+      family: "游ゴシック"         # 日本語対応フォント
+      family_en: "Yu Gothic"
+      size: 20                   # 読みやすいサイズに調整
+      bold: false
+      color: "#333333"
+      line_height: 1.6           # 十分な行間（改行割れ防止）
+
+    caption:
+      family: "游ゴシック"
+      family_en: "Yu Gothic"
+      size: 14
+      bold: false
+      color: "#666666"
+      line_height: 1.5
+
+  layout:
+    slide_width: 10      # インチ
+    slide_height: 7.5    # インチ
+    margin:
+      top: 0.8           # 余白を増やしてミニマルな印象に
+      left: 0.8
+      right: 0.8
+      bottom: 0.8
+
+conversion:
+  text_extraction:
+    method: "native"  # native または ocr
+    preserve_formatting: true
+    remove_extra_whitespace: true
+
+  slide_templates:
+    # 1ページ目（タイトルスライド）
+    title_slide:
+      type: "title_only"
+      title:
+        x: 0.8               # マージンに合わせて調整
+        y: 2.8
+        width: 8.4           # マージン分を引く（10 - 0.8*2 = 8.4）
+        height: 2.0          # 改行割れ防止のため高さを増加
+        align: "center"
+        valign: "middle"
+
+      subtitle:
+        x: 0.8
+        y: 5.0
+        width: 8.4
+        height: 1.5          # 改行割れ防止のため高さを増加
+        align: "center"
+        valign: "top"
+
+    # 2ページ目以降（コンテンツスライド）
+    content_slide:
+      type: "title_and_content"
+      title:
+        x: 0.8               # マージンに合わせて調整
+        y: 0.8
+        width: 8.4
+        height: 1.0          # 改行割れ防止のため高さを増加
+        align: "left"
+        valign: "middle"
+
+      content:
+        x: 0.8
+        y: 2.0
+        width: 8.4
+        height: 4.7          # マージン分を調整（7.5 - 0.8 - 2.0 = 4.7）
+        align: "left"
+        valign: "top"
+
+      # コンテンツエリアをテキストと画像で分割する場合
+      split_layout:
+        enabled: false
+        text_width: 5.0
+        image_width: 4.0
+        image_x: 5.5
+
+  # PDFページとスライドのマッピング
+  page_mapping:
+    first_page: "title_slide"
+    other_pages: "content_slide"
+
+# FABRIC TOKYO特化設定
+branding:
+  footer:
+    enabled: true
+    text: "FABRIC TOKYO"
+    position:
+      x: 0.5
+      y: 7.0
+    font_size: 10
+    color: "#97BC62"
+
+  logo:
+    enabled: false
+    # ロゴ画像のパスを指定する場合
+    # path: "assets/logo.png"
+    position:
+      x: 9.0
+      y: 0.3
+      width: 0.8
+      height: 0.4
