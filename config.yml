@@ -4,11 +4,11 @@ template:
 
 design:
   theme:
-    primary_color: "#2C5F2D"      # FABRIC TOKYOグリーン
-    secondary_color: "#97BC62"    # ライトグリーン
+    primary_color: "#333333"      # ダークグレー（FABRIC TOKYOメインカラー）
+    secondary_color: "#666666"    # ミディアムグレー
     accent_color: "#F5F5F5"       # ライトグレー
     background_color: "#FFFFFF"   # ホワイト
-    text_color: "#333333"         # ダークグレー
+    text_color: "#333333"         # テキストカラー（ダークグレー）
 
   fonts:
     title:
@@ -16,7 +16,7 @@ design:
       family_en: "Yu Gothic Medium"
       size: 36
       bold: true
-      color: "#2C5F2D"
+      color: "#333333"           # モノクロデザイン
       line_height: 1.4           # 行間（改行割れ防止）
 
     body:
@@ -110,7 +110,7 @@ branding:
       x: 0.5
       y: 7.0
     font_size: 10
-    color: "#97BC62"
+    color: "#666666"           # モノクロデザイン
 
   logo:
     enabled: false
