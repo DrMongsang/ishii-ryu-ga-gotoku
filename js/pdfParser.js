@@ -102,8 +102,16 @@ class PDFParser {
 
         console.log(`ページ ${pageNum}: ${textContent.items.length}個のテキストアイテム`);
 
-        // テキストアイテムを行ごとにグループ化
-        const lines = this.groupTextByLines(textContent.items);
+        let lines = [];
+
+        // テキストアイテムが少ない場合はOCRにフォールバック
+        if (textContent.items.length < 5) {
+            console.warn(`ページ ${pageNum}: テキスト情報が少ない（${textContent.items.length}個）→ OCR使用`);
+            lines = await this.extractPageWithOCR(page, pageNum);
+        } else {
+            // テキストアイテムを行ごとにグループ化
+            lines = this.groupTextByLines(textContent.items);
+        }
 
         // タイトルと本文を分離
         const title = this.extractTitle(lines);
@@ -118,6 +126,58 @@ class PDFParser {
             rawText: lines.join('\n'),
             textItems: textContent.items
         };
+    }
+
+    /**
+     * OCRを使ってページからテキストを抽出
+     * @param {Object} page - PDF.jsのページオブジェクト
+     * @param {number} pageNum - ページ番号
+     * @returns {Promise<Array<string>>} 行の配列
+     */
+    async extractPageWithOCR(page, pageNum) {
+        try {
+            console.log(`ページ ${pageNum}: OCR処理開始...`);
+
+            // PDF ページをキャンバスにレンダリング
+            const viewport = page.getViewport({ scale: 2.0 }); // 高解像度でレンダリング
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            await page.render({
+                canvasContext: context,
+                viewport: viewport
+            }).promise;
+
+            console.log(`ページ ${pageNum}: キャンバスレンダリング完了`);
+
+            // Tesseract.jsでOCR実行
+            const { data: { text } } = await Tesseract.recognize(
+                canvas,
+                'jpn+eng', // 日本語と英語
+                {
+                    logger: m => {
+                        if (m.status === 'recognizing text') {
+                            console.log(`OCR進捗: ${Math.round(m.progress * 100)}%`);
+                        }
+                    }
+                }
+            );
+
+            console.log(`ページ ${pageNum}: OCR完了 - ${text.length}文字抽出`);
+
+            // テキストを行に分割
+            const lines = text
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+
+            return lines;
+        } catch (error) {
+            console.error(`ページ ${pageNum} のOCR処理エラー:`, error);
+            return [`[ページ ${pageNum} のOCR処理に失敗しました]`];
+        }
     }
 
     /**
