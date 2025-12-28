@@ -61,13 +61,12 @@ body {
 }
 
 /* ========================================
-   FABRIC TOKYO ヘッダー
+   Simple FABRIC TOKYO ヘッダー
    ======================================== */
-.fabric-header {
+.simple-header {
     background: var(--white);
-    padding: 1.5rem 2rem;
+    padding: 1rem 2rem;
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: var(--spacing-xl);
 }
 
 .fabric-header-top {
@@ -189,9 +188,9 @@ body {
 }
 
 /* ========================================
-   ヘッダー（旧スタイル - 後方互換性のため保持）
+   アプリタイトルセクション
    ======================================== */
-.header {
+.app-title-section {
     text-align: center;
     margin-bottom: var(--spacing-xl);
     padding: var(--spacing-lg) 0;
@@ -314,7 +313,7 @@ body {
 }
 
 .dropzone-content {
-    /* pointer-events削除 - ドラッグ&ドロップを有効化 */
+    /* ドラッグ&ドロップとクリックを有効化 */
 }
 
 .dropzone-icon {
@@ -322,6 +321,7 @@ body {
     height: 64px;
     margin: 0 auto var(--spacing-md);
     color: var(--secondary-color);
+    pointer-events: none; /* クリックを親要素に伝える */
 }
 
 .dropzone-text {
@@ -329,12 +329,14 @@ body {
     color: var(--text-color);
     font-weight: 600;
     margin-bottom: var(--spacing-xs);
+    pointer-events: none; /* クリックを親要素に伝える */
 }
 
 .dropzone-subtext {
     font-size: var(--font-size-sm);
     color: var(--text-light);
     margin-bottom: var(--spacing-md);
+    pointer-events: none; /* クリックを親要素に伝える */
 }
 
 .file-input-label {
