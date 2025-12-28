@@ -304,17 +304,17 @@ body {
 
 .dropzone:hover {
     border-color: var(--secondary-color);
-    background: rgba(151, 188, 98, 0.05);
+    background: rgba(102, 102, 102, 0.05);
 }
 
 .dropzone.drag-over {
     border-color: var(--primary-color);
-    background: rgba(44, 95, 45, 0.05);
+    background: rgba(51, 51, 51, 0.05);
     transform: scale(1.02);
 }
 
 .dropzone-content {
-    pointer-events: none;
+    /* pointer-events削除 - ドラッグ&ドロップを有効化 */
 }
 
 .dropzone-icon {
@@ -350,7 +350,7 @@ body {
 }
 
 .file-input-label:hover {
-    background: #234d24;
+    background: #1a1a1a;
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
