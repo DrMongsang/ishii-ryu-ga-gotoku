@@ -313,7 +313,7 @@ body {
 }
 
 .dropzone-content {
-    /* ドラッグ&ドロップとクリックを有効化 */
+    pointer-events: none; /* 親要素（dropzone）にクリックを伝える */
 }
 
 .dropzone-icon {
@@ -321,7 +321,6 @@ body {
     height: 64px;
     margin: 0 auto var(--spacing-md);
     color: var(--secondary-color);
-    pointer-events: none; /* クリックを親要素に伝える */
 }
 
 .dropzone-text {
@@ -329,14 +328,12 @@ body {
     color: var(--text-color);
     font-weight: 600;
     margin-bottom: var(--spacing-xs);
-    pointer-events: none; /* クリックを親要素に伝える */
 }
 
 .dropzone-subtext {
     font-size: var(--font-size-sm);
     color: var(--text-light);
     margin-bottom: var(--spacing-md);
-    pointer-events: none; /* クリックを親要素に伝える */
 }
 
 .file-input-label {
