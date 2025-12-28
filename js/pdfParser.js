@@ -133,35 +133,52 @@ class PDFParser {
 
         console.log(`PDF Parser: ${textItems.length}個のテキストアイテムを処理中`);
 
-        const lines = [];
-        let currentLine = '';
-        let lastY = null;
-        const yThreshold = 10; // Y座標の許容誤差を拡大（2 → 10）
+        // Y座標でソート（上から下へ）
+        const sortedItems = textItems
+            .map(item => ({
+                text: item.str,
+                x: item.transform[4],
+                y: item.transform[5]
+            }))
+            .filter(item => item.text && item.text.trim())
+            .sort((a, b) => b.y - a.y); // Y座標降順（上が大きい）
 
-        textItems.forEach((item, index) => {
-            const text = item.str.trim();
-            if (!text) return;
-
-            const currentY = item.transform[5];
-
-            // 新しい行の判定（Y座標が変化した場合）
-            if (lastY !== null && Math.abs(currentY - lastY) > yThreshold) {
-                if (currentLine.trim()) {
-                    lines.push(currentLine.trim());
-                }
-                currentLine = text;
-            } else {
-                // 同じ行に追加
-                currentLine += (currentLine ? ' ' : '') + text;
-            }
-
-            lastY = currentY;
-        });
-
-        // 最後の行を追加
-        if (currentLine.trim()) {
-            lines.push(currentLine.trim());
+        if (sortedItems.length === 0) {
+            console.warn('PDF Parser: 有効なテキストがありません');
+            return [];
         }
+
+        // Y座標でグループ化（同じ行とみなす範囲）
+        const lineGroups = [];
+        let currentGroup = [sortedItems[0]];
+        const yThreshold = 5; // 同じ行とみなすY座標の差
+
+        for (let i = 1; i < sortedItems.length; i++) {
+            const item = sortedItems[i];
+            const lastItem = currentGroup[currentGroup.length - 1];
+
+            if (Math.abs(item.y - lastItem.y) <= yThreshold) {
+                // 同じ行に追加
+                currentGroup.push(item);
+            } else {
+                // 新しい行を開始
+                // X座標でソート（左から右へ）
+                currentGroup.sort((a, b) => a.x - b.x);
+                lineGroups.push(currentGroup);
+                currentGroup = [item];
+            }
+        }
+
+        // 最後のグループを追加
+        if (currentGroup.length > 0) {
+            currentGroup.sort((a, b) => a.x - b.x);
+            lineGroups.push(currentGroup);
+        }
+
+        // 各行のテキストを結合
+        const lines = lineGroups.map(group =>
+            group.map(item => item.text.trim()).join(' ').trim()
+        ).filter(line => line.length > 0);
 
         console.log(`PDF Parser: ${lines.length}行のテキストを抽出しました`);
         if (lines.length > 0) {
